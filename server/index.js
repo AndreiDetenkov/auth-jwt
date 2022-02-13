@@ -3,9 +3,9 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
-const router = require('./router/index.js')
+const router = require('./router/index')
 
-const PORT = process.env.PORT || 9090
+const PORT = process.env.PORT || 9000
 const app = express()
 
 app.use(express.json())
