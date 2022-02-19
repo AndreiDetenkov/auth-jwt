@@ -5,7 +5,6 @@ class MailService {
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: process.env.SMTP_PORT,
-      secure: false,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD
@@ -24,6 +23,11 @@ class MailService {
             <h1>For activation go to the link below:</h1>
             <a href="${link}">${link}</a>
           </div>`
+    }, (error, info) => {
+      if (error) {
+        return console.log(error);
+      }
+      console.log('Email sent: ' + info.response);
     })
   }
 }
