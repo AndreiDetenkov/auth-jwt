@@ -38,7 +38,7 @@ class UserService {
     await user.save()
   }
 
-  async users() {
+  async getAllUsers() {
     return UserModel.find()
   }
 
@@ -52,6 +52,28 @@ class UserService {
       throw ApiError.BadRequest('Wrong password')
     }
 
+    const userDto = new UserDto(user)
+    const tokens = tokenService.generateTokens({ ...userDto })
+    await tokenService.saveToken(userDto.id, tokens.refreshToken)
+    return { ...tokens, user: userDto }
+  }
+
+  async logout(refreshToken) {
+    return await tokenService.removeToken(refreshToken)
+  }
+
+  async refresh(refreshToken) {
+    if (!refreshToken) {
+      throw ApiError.Unauthorized()
+    }
+
+    const userData = tokenService.validateRefreshToken(refreshToken)
+    const tokenFromDb = tokenService.findToken(refreshToken)
+    if (!userData || !tokenFromDb) {
+      throw ApiError.Unauthorized()
+    }
+
+    const user = UserModel.findById(userData.id)
     const userDto = new UserDto(user)
     const tokens = tokenService.generateTokens({ ...userDto })
     await tokenService.saveToken(userDto.id, tokens.refreshToken)
