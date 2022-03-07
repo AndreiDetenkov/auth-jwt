@@ -10,7 +10,7 @@ class UserService {
   async registration(email, password) {
     const candidate = await UserModel.findOne({ email })
     if (candidate) {
-      throw ApiError.BadRequest(`User with email ${email} already exists`)
+      throw ApiError.BadRequest(`User with email: ${email} already exists`)
     }
     const hashPassword = await bcrypt.hash(password, 10)
     const activationLink = uuid.v4()
@@ -40,6 +40,22 @@ class UserService {
 
   async users() {
     return UserModel.find()
+  }
+
+  async login(email, password) {
+    const user = await UserModel.findOne({email})
+    if (!user) {
+      throw ApiError.BadRequest(`User with email: ${email} not found`)
+    }
+    const isPassEquals = await bcrypt.compare(password, user.password)
+    if (!isPassEquals) {
+      throw ApiError.BadRequest('Wrong password')
+    }
+
+    const userDto = new UserDto(user)
+    const tokens = tokenService.generateTokens({ ...userDto })
+    await tokenService.saveToken(userDto.id, tokens.refreshToken)
+    return { ...tokens, user: userDto }
   }
 }
 

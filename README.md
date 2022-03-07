@@ -1,1 +1,1 @@
-# auth-jwt-node-vue3
+# auth-jwt-node
