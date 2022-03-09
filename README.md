@@ -1,1 +1,3 @@
-# auth-jwt-node
+## auth-jwt
+### backend: Nodejs, Express, MongoDb
+### frontend: React.js
