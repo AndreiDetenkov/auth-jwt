@@ -1,6 +1,6 @@
 import $api from '../http/intex'
 import { AxiosResponse } from 'axios'
-import { AuthResponseInterface } from '../components/models/response/AuthResponse'
+import { AuthResponseInterface } from '../models/response/AuthResponse'
 
 export default class AuthService {
   static async login(
