@@ -46,7 +46,7 @@ export default class Store {
 
   async logout(email: string, password: string) {
     try {
-      const response = await AuthService.logout()
+      await AuthService.logout()
       localStorage.removeItem('token')
       this.setAuth(false)
       this.setUser({} as UserInterface)
