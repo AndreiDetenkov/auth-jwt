@@ -1,6 +1,11 @@
 import { makeAutoObservable } from 'mobx'
-import { UserInterface } from '../models/response/AuthResponse'
+import {
+  AuthResponseInterface,
+  UserInterface,
+} from '../models/response/AuthResponse'
 import AuthService from '../services/AuthService'
+import axios from 'axios'
+import { API_URL } from '../http/intex'
 
 export default class Store {
   user = {} as UserInterface
@@ -44,12 +49,29 @@ export default class Store {
     }
   }
 
-  async logout(email: string, password: string) {
+  async logout() {
     try {
       await AuthService.logout()
       localStorage.removeItem('token')
       this.setAuth(false)
       this.setUser({} as UserInterface)
+    } catch (e) {
+      // @ts-ignore
+      console.error(e.response?.data?.message)
+    }
+  }
+
+  async checkAuth() {
+    try {
+      const response = await axios.get<AuthResponseInterface>(
+        `${API_URL}/refresh`,
+        { withCredentials: true }
+      )
+      const { accessToken, user } = response.data
+
+      localStorage.setItem('token', accessToken)
+      this.setAuth(true)
+      this.setUser(user)
     } catch (e) {
       // @ts-ignore
       console.error(e.response?.data?.message)
