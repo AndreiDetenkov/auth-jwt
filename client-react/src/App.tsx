@@ -1,12 +1,12 @@
-import React, {FC} from 'react';
-import './App.css';
+import React, { FC } from 'react'
+import LoginForm from './components/LoginForm'
 
 const App: FC = () => {
   return (
     <div className="App">
-      app
+      <LoginForm />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

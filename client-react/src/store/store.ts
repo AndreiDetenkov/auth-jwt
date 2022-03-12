@@ -26,6 +26,7 @@ export default class Store {
       this.setAuth(true)
       this.setUser(user)
     } catch (e) {
+      // @ts-ignore
       console.error(e.response?.data?.message)
     }
   }
@@ -38,6 +39,7 @@ export default class Store {
       this.setAuth(true)
       this.setUser(user)
     } catch (e) {
+      // @ts-ignore
       console.error(e.response?.data?.message)
     }
   }
@@ -49,6 +51,7 @@ export default class Store {
       this.setAuth(false)
       this.setUser({} as UserInterface)
     } catch (e) {
+      // @ts-ignore
       console.error(e.response?.data?.message)
     }
   }
